@@ -16,7 +16,7 @@ public class DTura01 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.printf("%s/n", Member.Const.menu)
+        System.out.printf("%s/n", Member.Const.menu);
     }
     
 }
