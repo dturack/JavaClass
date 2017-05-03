@@ -1,6 +1,6 @@
 %%%%%%%%% dataset1 %%%%%%%
 rng default; % For reproducibility
-X = [randn(100,2)*0.75+ones(100,2);randn(100,2)*0.5-ones(100,2)];
+X = [randn(100,2)*0.75+ones(100,2);randn(100,2)*0.5-ones(100,2)]
 figure;
 plot(X(:,1),X(:,2),'.');
 title 'Randomly Generated Data';
@@ -25,17 +25,22 @@ title 'Randomly Generated Data';
 
 %%%%%%%%% building Kmeans fuction   %%%%%%%%%%%
 A = java.util.ArrayList();
-for i = 1:numel(X)
+for i = 1:(numel(X)/2)
     A.add(X(i));
+    A.add(X(i+numel(X)/2));
 end
 
 itr = A.listIterator();
 
 c1x = itr.next();
 c1y = itr.next();
+%c1x = 1.4033;
+%c1y = 2.3754;
 idx = 1;
 c2x = itr.next();
 c2y = itr.next();
+%c2x = -0.6941;
+%c2y = 1.6466;
 idx(end+1) = 2;
 C = [c1x,c1y;c2x,c2y];
 while itr.hasNext()
@@ -53,8 +58,7 @@ while itr.hasNext()
         idx(end+1) = 2;
     end    
 end
-%[idx,C] = kmeans(X,2);
-idx
+idx;
 C(1,:)
 C(2,:)
 %%%%%%%%%%% replace this section with your code %%%%%%%%%%%%%%
@@ -62,7 +66,7 @@ C(2,:)
 
 
 
-%%%%%%%%  Plot the result   **************
+%%%%%%%%  Plot the result
 figure;
 plot(X(idx==1,1),X(idx==1,2),'r.','MarkerSize',12)
 hold on
