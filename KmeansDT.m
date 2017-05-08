@@ -32,35 +32,71 @@ end
 
 itr = A.listIterator();
 
-c1x = itr.next();
-c1y = itr.next();
-%c1x = 1.4033;
-%c1y = 2.3754;
-idx = 1;
-c2x = itr.next();
-c2y = itr.next();
-%c2x = -0.6941;
-%c2y = 1.6466;
-idx(end+1) = 2;
-C = [c1x,c1y;c2x,c2y];
+%c1x = itr.next();
+%c1y = itr.next();
+%c2x = itr.next();
+%c2y = itr.next();
+rng('shuffle'); %to randomize
+c1x = 4.0*rand(1,1)-2.0;
+c1y = 4.0*rand(1,1)-2.0;
+c2x = 4.0*rand(1,1)-2.0;
+c2y = 4.0*rand(1,1)-2.0;
+avg1x = c1x;
+avg1y = c1y;
+avg2x = c2x;
+avg2y = c2y;
+i = 0;
+while i<4
+    %idx = double.empty(0,0);
+    if i > 0
+        c1x = avg1x;
+        c1y = avg1y;
+        c2x = avg2x;
+        c2y = avg2y;
+    end
+    count1 = 1;
+    count2 = 1;
+    C = [c1x,c1y;c2x,c2y];
+    count = 0;
 while itr.hasNext()
     x = itr.next();
     y = itr.next();
-    P1 = [x,y;c1x,c1y];
-    P2 = [x,y;c2x,c2y];
-    %dist1 = dist(P1);
-    %dist2 = dist(P2);
+    %P1 = [x,y;c1x,c1y];
+    %P2 = [x,y;c2x,c2y];
     dist1 = sqrt(((x-c1x)^2) + ((y-c1y)^2));
     dist2 = sqrt(((x-c2x)^2) + ((y-c2y)^2));
     if dist1 < dist2
-        idx(end+1) = 1;
+        if count == 0
+            %idx(1:100) = [];
+            idx = 1;
+            count = 1;
+        else
+            idx(end+1) = 1;
+        end
+        count1 = count1 + 1;
+        avg1x = avg1x+x;
+        avg1y = avg1y+y;
     else
-        idx(end+1) = 2;
+        if count == 0
+            %idx(1:100) = [];
+            idx = 2;
+            count = 1;
+        else
+            idx(end+1) = 2;
+        end
+        count2 = count2 + 1;
+        avg2x = avg2x+x;
+        avg2y = avg2y+y;
     end    
 end
-idx;
+%idx;
 C(1,:)
 C(2,:)
+avg1x = avg1x/count1;
+avg1y = avg1y/count1;
+avg2x = avg2x/count2;
+avg2y = avg2y/count2;
+
 %%%%%%%%%%% replace this section with your code %%%%%%%%%%%%%%
 
 
@@ -75,3 +111,6 @@ plot(C(:,1),C(:,2),'kx','MarkerSize',15,'LineWidth',3)
 legend('Cluster 1','Cluster 2','Centroids','Location','NW')
 title 'Cluster Assignments and Centroids'
 hold off
+i = i+1;
+%idx(1:numel(idx)) = [];
+end
