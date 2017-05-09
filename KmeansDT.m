@@ -1,5 +1,6 @@
 %%%%%%%%% dataset1 %%%%%%%
 rng default; % For reproducibility
+rng('shuffle');
 X = [randn(100,2)*0.75+ones(100,2);randn(100,2)*0.5-ones(100,2)]
 figure;
 plot(X(:,1),X(:,2),'.');
@@ -24,6 +25,8 @@ title 'Randomly Generated Data';
 
 
 %%%%%%%%% building Kmeans fuction   %%%%%%%%%%%
+j = 0;
+while j<5
 A = java.util.ArrayList();
 for i = 1:(numel(X)/2)
     A.add(X(i));
@@ -32,10 +35,8 @@ end
 
 itr = A.listIterator();
 
-%c1x = itr.next();
-%c1y = itr.next();
-%c2x = itr.next();
-%c2y = itr.next();
+if j==0
+    idx2 = 0;
 rng('shuffle'); %to randomize
 c1x = 4.0*rand(1,1)-2.0;
 c1y = 4.0*rand(1,1)-2.0;
@@ -45,15 +46,12 @@ avg1x = c1x;
 avg1y = c1y;
 avg2x = c2x;
 avg2y = c2y;
-i = 0;
-while i<4
-    %idx = double.empty(0,0);
-    if i > 0
-        c1x = avg1x;
-        c1y = avg1y;
-        c2x = avg2x;
-        c2y = avg2y;
-    end
+else
+    c1x = avg1x;
+    c1y = avg1y;
+    c2x = avg2x;
+    c2y = avg2y;
+end
     count1 = 1;
     count2 = 1;
     C = [c1x,c1y;c2x,c2y];
@@ -61,13 +59,10 @@ while i<4
 while itr.hasNext()
     x = itr.next();
     y = itr.next();
-    %P1 = [x,y;c1x,c1y];
-    %P2 = [x,y;c2x,c2y];
     dist1 = sqrt(((x-c1x)^2) + ((y-c1y)^2));
     dist2 = sqrt(((x-c2x)^2) + ((y-c2y)^2));
     if dist1 < dist2
         if count == 0
-            %idx(1:100) = [];
             idx = 1;
             count = 1;
         else
@@ -78,7 +73,6 @@ while itr.hasNext()
         avg1y = avg1y+y;
     else
         if count == 0
-            %idx(1:100) = [];
             idx = 2;
             count = 1;
         else
@@ -111,6 +105,10 @@ plot(C(:,1),C(:,2),'kx','MarkerSize',15,'LineWidth',3)
 legend('Cluster 1','Cluster 2','Centroids','Location','NW')
 title 'Cluster Assignments and Centroids'
 hold off
-i = i+1;
-%idx(1:numel(idx)) = [];
+if sum(abs(idx-idx2)>0)<1
+    j = 20;
+else
+    j = j+1;
+end
+idx2 = idx;
 end
