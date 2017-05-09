@@ -25,14 +25,15 @@ title 'Randomly Generated Data';
 
 
 %%%%%%%%% building Kmeans fuction   %%%%%%%%%%%
-j = 0;
-while j<5
+
 A = java.util.ArrayList();
 for i = 1:(numel(X)/2)
     A.add(X(i));
     A.add(X(i+numel(X)/2));
 end
 
+j = 0;
+while j<10
 itr = A.listIterator();
 
 if j==0
